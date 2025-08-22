@@ -23,12 +23,12 @@ class DbConfig:
         )
 
 
-def construct_url(self, driver: str = 'asyncpg') -> str:
-    return URL.create(
-        drivername=f'postgresql+{driver}',
-        host=self.host,
-        database=self.database,
-        username=self.user,
-        password=self.password,
-        port=self.port
-    ).render_as_string()
+    def construct_url(self, driver: str = 'asyncpg') -> str:
+        return URL.create(
+            drivername=f'postgresql+{driver}',
+            host=self.host,
+            database=self.database,
+            username=self.user,
+            password=self.password,
+            port=self.port
+        ).render_as_string(hide_password=False)
