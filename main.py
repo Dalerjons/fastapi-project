@@ -3,19 +3,13 @@
 
 from fastapi import FastAPI
 from pydantic import BaseModel
+from backend.api import router as api_router
 
 app = FastAPI(
     title='My API',
     description=' My first API'
 )
 
-
-class CategorySchema(BaseModel):
-    id: int
-    name: str
+app.include_router(api_router)
 
 
-@app.get('/api/categories')
-def get_categories() -> list[CategorySchema]:
-    categories = [CategorySchema(id=i, name=f'category-{i}')for i in range(1, 11)]
-    return categories

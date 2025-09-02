@@ -1,11 +1,13 @@
 from environs import Env
-from .db import DbConfig
+from config.db import DbConfig
+from config.api import ApiConfig
 from dataclasses import dataclass
 
 
 @dataclass
 class Config:
     db: DbConfig
+    api_prefix: ApiConfig
 
 
 def load_config(env_path: str | None = None):
@@ -13,7 +15,9 @@ def load_config(env_path: str | None = None):
     env.read_env(env_path)
 
     db = DbConfig.from_env(env)
+    api_prefix = ApiConfig()
 
     return Config(
-        db=db
+        db=db,
+        api_prefix=api_prefix
     )

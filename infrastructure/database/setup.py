@@ -9,7 +9,7 @@ def create_engine(db: DbConfig, echo: bool = True):
         db.construct_url(),
         query_cache_size=1200,
         pool_size=20,
-        max_oferflow=200,
+        max_overflow=200,
         future=True,
         echo=echo
     )
