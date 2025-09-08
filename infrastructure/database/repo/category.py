@@ -24,8 +24,12 @@ class CategoryRepo(BaseRepo):
         result = await self.session.execute(query)
         return result.scalar_one_or_none()
 
-    async def delete_category(self):
-        pass
+    async def delete_category(self, category_id: int):
+        query = sa.delete(Category).where(Category.id == category_id).returning(Category)
+        result = await self.session.execute(query)
+        await self.session.commit()
+        return result.scalar_one_or_none()
+
 
     async def update_category(self, category_id: int, name: str):
         query = sa.update(Category).where(Category.id == category_id).values(name=name).returning(Category)

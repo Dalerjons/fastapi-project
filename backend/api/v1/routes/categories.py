@@ -1,5 +1,5 @@
 from typing import Annotated
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, status
 from config.load import load_config
 from pydantic import BaseModel
 from backend.app.dependencies import get_repo
@@ -63,3 +63,13 @@ async def update_category(
         raise HTTPException(status_code=404, detail=f'Category with {category_id} not found')
     return CategoryCreateDTO.model_validate(updated_category, from_attributes=True)
 
+
+@router.delete('/{category_id}', response_model=CategorySchema, status_code=status.HTTP_200_OK)
+async def delete_category(
+        category_id: int,
+        repo: Annotated[RequestsRepo, Depends(get_repo)]
+):
+    delete_category = await repo.categories.delete_category(category_id)
+    if delete_category is None:
+        raise HTTPException(status_code=404, detail=f'Category with {category_id} not found')
+    return CategorySchema.model_validate(delete_category, from_attributes=True)
